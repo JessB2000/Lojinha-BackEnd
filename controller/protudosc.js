@@ -11,6 +11,6 @@ router.get('/:id_produtos', produtos.getProduto);
 
 router.put('/:id_produtos', produtos.putProduto);
 
-router.delete('/', produtos.deleteAllProdutos);
+router.delete('/:id_produtos', produtos.deleteAllProdutos);
 
 module.exports = router;

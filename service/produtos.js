@@ -49,7 +49,7 @@ exports.getProduto = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
         conn.query(
-            'SELECT * FROM Pedidos WHERE id_pedidos = ?;', [req.params.id_produtos],
+            'SELECT * FROM produtos WHERE id = ?;', [req.params.id_produtos],
             (error, resultado, fields) => {
                 conn.release();
                 if (error) {
@@ -68,7 +68,7 @@ exports.putProduto = (req, res, next) => {
         mysql.getConnection((error, conn) => {
             if (error) { return res.status(500).send({ error: error }) }
             conn.query(
-                'UPDATE produtos SET url = ?, titulo = ? , descricao = ?, marca = ?, cor = ?, categoria = ?, subcategoria = ?, preco = ? WHERE id = ?', [produtos.url, produtos.titulo, produtos.descricao, produtos.marca, produtos.cor, produtos.categoria, produtos.subcategoria, produtos.preco, id_produtos],
+                'UPDATE produtos SET url = ?, titulo = ? , descricao = ?, marca = ?, cor = ?, categoria = ?, subcategoria = ?, preco = ? WHERE id = ?', [req.body.url, req.body.titulo, req.body.descricao, req.body.marca, req.body.cor, req.body.categoria, req.body.subcategoria, req.body.preco, req.params.id_produtos],
                 (error, resultado, field) => {
                     conn.release();
                     if (error) {
@@ -91,7 +91,7 @@ exports.deleteAllProdutos = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
         conn.query(
-            'DELETE FROM produtos WHERE id = ?', [req.body.id],
+            'DELETE FROM produtos WHERE id = ?', [req.params.id_produtos],
             (error, resultado, field) => {
                 conn.release();
                 if (error) {
