@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const app = express();
 const bodyParser = require('body-parser');
 const req = require('express/lib/request');
+const rotaProdutos = require('./controller/protudosc');
 const cors = require('cors');
 app.use(cors());
 
@@ -22,6 +23,7 @@ app.use((res, req, next) => {
     next();
 })
 
+app.use('/produtos', rotaProdutos);
 
 //rota usada para quando não encontra nenhuma rota
 app.use((req, res, next) => {
