@@ -2,10 +2,14 @@ const mysql = require('../mysql').pool
 
 //retorna todos os produtos
 exports.getAllProdutos = (req, res, next) => {
+    var pesquisa = ''
+    if (req.query.pesquisa)
+        pesquisa = req.query.pesquisa
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
         conn.query(
-            'SELECT * FROM produtos',
+            `SELECT * FROM produtos
+             WHERE titulo LIKE ?`, ['%' + pesquisa + '%'],
             (error, resultado, fields) => {
                 conn.release();
                 if (error) {
