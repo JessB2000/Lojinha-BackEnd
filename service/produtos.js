@@ -125,3 +125,23 @@ exports.deleteAllProdutos = (req, res, next) => {
         )
     })
 }
+exports.getTotal = (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error }) }
+        conn.query(
+            'SELECT count(*) AS total FROM produtos', [],
+            (error, resultado, fields) => {
+                console.log(resultado)
+                console.log(fields)
+                conn.release();
+                if (error) {
+                    res.status(500).send({
+                        error: error,
+                        response: null
+                    });
+                };
+                return res.status(200).send({ response: resultado })
+            }
+        )
+    })
+};
