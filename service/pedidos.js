@@ -5,7 +5,10 @@ exports.getAllPedidos = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
         conn.query(
-            'SELECT * FROM pedidos',
+            `SELECT P.*, SUM (i.quantidade*prd.preco) AS subtotal
+            FROM pedidos P 
+            LEFT JOIN items_pedidos i ON i.id_pedidos = P.id
+            lEFT JOIN produtos prd ON prd.id = i.id_produtos`,
             (error, resultado, fields) => {
                 conn.release();
                 if (error) {
@@ -49,7 +52,10 @@ exports.getPedido = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
         conn.query(
-            'SELECT * FROM pedidos WHERE id = ?;', [req.params.id_pedidos],
+            `SELECT P.*, SUM (i.quantidade*prd.preco) AS subtotal
+            FROM pedidos P 
+            LEFT JOIN items_pedidos i ON i.id_pedidos = P.id
+            lEFT JOIN produtos prd ON prd.id = i.id_produtos WHERE P.id = ?;`, [req.params.id_pedidos],
             (error, resultado, fields) => {
                 conn.release();
                 if (error) {
