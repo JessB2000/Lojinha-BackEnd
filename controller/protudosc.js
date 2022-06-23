@@ -7,6 +7,8 @@ router.get('/', produtos.getAllProdutos);
 
 router.post('/', produtos.postAllProdutos);
 
+router.get('/total', produtos.getTotal);
+
 router.get('/:id_produtos', produtos.getProduto);
 
 router.put('/:id_produtos', produtos.putProduto);

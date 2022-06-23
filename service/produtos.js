@@ -4,12 +4,25 @@ const mysql = require('../mysql').pool
 exports.getAllProdutos = (req, res, next) => {
     var pesquisa = ''
     if (req.query.pesquisa)
-        pesquisa = req.query.pesquisa
+        pesquisa = req.query.pesquisa;
+
+    var limite = 10
+    if (req.query.limit)
+        limite = parseInt(req.query.limit);
+
+    var offset = 0;
+    if (req.query.page) {
+        const page = parseInt(req.query.page);
+        offset = (page * limite) - limite;
+    }
+
+    // fim primeira parte da paginação 
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
         conn.query(
             `SELECT * FROM produtos
-             WHERE titulo LIKE ?`, ['%' + pesquisa + '%'],
+             WHERE titulo LIKE ?
+             LIMIT ? OFFSET ?`, ['%' + pesquisa + '%', limite, offset],
             (error, resultado, fields) => {
                 conn.release();
                 if (error) {
@@ -112,3 +125,23 @@ exports.deleteAllProdutos = (req, res, next) => {
         )
     })
 }
+exports.getTotal = (req, res, next) => {
+    mysql.getConnection((error, conn) => {
+        if (error) { return res.status(500).send({ error: error }) }
+        conn.query(
+            'SELECT count(*) AS total FROM produtos', [],
+            (error, resultado, fields) => {
+                console.log(resultado)
+                console.log(fields)
+                conn.release();
+                if (error) {
+                    res.status(500).send({
+                        error: error,
+                        response: null
+                    });
+                };
+                return res.status(200).send({ response: resultado })
+            }
+        )
+    })
+};
