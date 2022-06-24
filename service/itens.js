@@ -52,7 +52,7 @@ exports.getItem = (req, res, next) => {
     mysql.getConnection((error, conn) => {
         if (error) { return res.status(500).send({ error: error }) }
         conn.query(
-            'SELECT * FROM items_pedidos WHERE id_pedidos = ? AND id_produtos;', [1, req.params.id_produtos],
+            'SELECT * FROM items_pedidos WHERE id_pedidos = ? AND id_produtos = ?;', [1, req.params.id_produtos],
             (error, resultado, fields) => {
                 conn.release();
                 if (error) {

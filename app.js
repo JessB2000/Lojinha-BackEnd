@@ -6,6 +6,7 @@ const req = require('express/lib/request');
 const rotaProdutos = require('./controller/protudosc');
 const rotaPedidos = require('./controller/pedidosc');
 const rotaItens = require('./controller/itensc');
+const rotaCep = require('./controller/cepc')
 const cors = require('cors');
 app.use(cors());
 
@@ -28,6 +29,7 @@ app.use((res, req, next) => {
 app.use('/produtos', rotaProdutos);
 app.use('/pedidos', rotaPedidos);
 app.use('/itens', rotaItens);
+app.use('/cep', rotaCep);
 
 //rota usada para quando não encontra nenhuma rota
 app.use((req, res, next) => {
