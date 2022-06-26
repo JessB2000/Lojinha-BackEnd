@@ -26,7 +26,7 @@ exports.getAllProdutos = (req, res, next) => {
             (error, resultado, fields) => {
                 conn.release();
                 if (error) {
-                    res.status(500).send({
+                    return res.status(500).send({
                         error: error,
                         response: null
                     });
